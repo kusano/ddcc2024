@@ -23,9 +23,9 @@ for q in Q:
         Ch = 0
         Lh = 0
         Rh = 0
-        tr = int(math.atan2(HX[t], HY[t])/(2*math.pi)*360*1000)
-        tr = max(-45000, min(45000, tr))
-        sr = [0]*4
+        tr_tmp = int(math.atan2(HX[t], HY[t])/(2*math.pi)*360*1000)
+        tr = max(-45000, min(45000, tr_tmp))
+        sr = [tr_tmp%18000]*4
         Nu = 10
         Wt = int((100.-(2+.5*10)*7)/6*1000)
         print(f"{Th},{Ch},{Lh},{Rh},{tr},{sr[0]},{sr[1]},{sr[2]},{sr[3]},{Nu},{Wt}{';'if t==6 else''}")
