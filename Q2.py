@@ -51,8 +51,8 @@ for t in [0, 3, 2, 5, 1, 6]:
                 besta = a
         #print("besta:", besta/math.pi*180)
         d = 800*math.sin(besta)
-        Lh = min(25000, int(1000*d/2))
-        Rh = max(-25000, -int(1000*d/2))
+        Lh = min(25000, max(-25000, int(1000*d/2)))
+        Rh = min(25000, max(-25000, -int(1000*d/2)))
         tr = int(tr/math.pi*180*1000)
 
     Nu = 10
