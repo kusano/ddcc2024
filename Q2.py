@@ -12,7 +12,7 @@ for i in range(4):
 
 g = 9.8*1000
 
-for t in [0, 3, 2, 5, 1]:
+for t in [0, 3, 2, 5, 1, 6]:
     Th = t+1
     Ch = 0
     Lh = 0
@@ -26,33 +26,37 @@ for t in [0, 3, 2, 5, 1]:
     sr = [(tr_tmp+(0 if t==0 else 90000))%180000]*4
     et = math.hypot(HX[t], HY[t])/500
 
-    if t in [2, 5]:
-        tr = -math.pi/4
+    if t in [2, 5, 1, 6]:
+        if t in [2, 5]:
+            tr = -math.pi/4
+        else:
+            tr = 0
         v = 500 # mm/s
         vx = v*math.sin(tr)
         vy = v*math.cos(tr)
         et = HY[t]/vy
         best = 1e10
-        for a in range(1,10000):
+        for a in range(-10000,10000):
+            if a==0:
+                continue
             a = a/100000
-            t2 = -vx/((1/2)*(5/7)*g*math.sin(a)*math.cos(a))
+            #t2 = -vx/((1/2)*(5/7)*g*math.sin(a)*math.cos(a))
+            fa = (1/2)*(5/7)*g*math.sin(a)*math.cos(a)
+            fb = vx
+            fc = -HX[t]
+            t2 = (-fb+(fb**2-4*fa*fc)**.5)/(2*fa)
             #print(a, a/math.pi*180, abs(t2-et))
             if abs(t2-et)<best:
                 best = abs(t2-et)
                 besta = a
         #print("besta:", besta/math.pi*180)
         d = 800*math.sin(besta)
-        Lh = int(1000*d/2)
-        Rh = -int(1000*d/2)
+        Lh = min(25000, int(1000*d/2))
+        Rh = max(-25000, -int(1000*d/2))
         tr = int(tr/math.pi*180*1000)
-
-    if t==1:
-        Lh = 25000
-        Rh = -25000
-        tr = 0
 
     Nu = 10
     Wt = int(et*2*1000)
     #Wt = int((55.-(2+.5*10)*4)/3*1000)
 
-    print(f"{Th},{Ch},{Lh},{Rh},{tr},{sr[0]},{sr[1]},{sr[2]},{sr[3]},{Nu},{Wt}{';'if t==6 else''}")
+    print(f"{Th},{Ch},{Lh},{Rh},{tr},{sr[0]},{sr[1]},{sr[2]},{sr[3]},{Nu},{Wt}")
